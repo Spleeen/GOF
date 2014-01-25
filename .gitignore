@@ -19,13 +19,9 @@ Thumbs.db
 GOF.pro.user
 
 *.7pre1
-
 *.autosave
-
-Makefile
-
 *.Debug
-
 *.Release
-
-debug/moc_Mainwindow.cpp
+debug/*
+release/*
+Makefile

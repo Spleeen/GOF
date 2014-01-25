@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
     t_start;
     for (int var = 0; var < 1000; ++var) {
         grid.nextGeneration ();
-        grid.printMap ();
-        QThread::msleep(100);
+        //grid.printMap ();
+        //QThread::msleep(100);
     }
     t_end;
 

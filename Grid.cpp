@@ -52,6 +52,7 @@ void Grid::nextGeneration()
     #pragma omp parallel for
     for (int y = 0; y < _lines; ++y)
     {
+
         for (int x = 0; x < _columns; ++x)
         {
             int count = arroundCell (x,y);

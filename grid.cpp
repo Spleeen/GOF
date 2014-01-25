@@ -1,40 +1,140 @@
 #include "grid.h"
-
+#include "Utilities.h"
+#include <iostream>
+#include <stdio.h>
+#include <omp.h>
 using namespace std;
 
-Grid::Grid(const int wx, const int hx)
+Grid::Grid(const int dimx, const int dimy)
 {
 
-    if(h > 0 && h > 0)
+    if(dimx > 0 && dimy > 0)
     {
         int i;
 
-        w = wx;
-        h = hx;
-        _grid = (int**)malloc(sizeof(Cell*) * hx);
+        _columns = dimx;
+        _lines = dimy;
+        _currentPopulation = (State**)malloc(sizeof(State*) * dimy);
+        _nextPopulation = (State**)malloc(sizeof(State*) * dimy);
 
-        for(i=0 ; i<hx ; i++)
-            _grid[i] = (int*)calloc(wx, sizeof(Cell));
+
+        for(i=0 ; i<dimy ; i++){
+            _currentPopulation[i] = (State*)calloc(dimx, sizeof(State));
+            _nextPopulation[i] = (State*)calloc(dimx, sizeof(State));
+
+        }
     }
     else
     {
-        w = 0;
-        h = 0;
-        _grid = NULL;
+        _columns = 0;
+        _lines = 0;
+        _currentPopulation = NULL;
+        _nextPopulation = NULL;
+
     }
+}
+
+inline State Grid::getState(const int x, const int y)
+{
+    return _currentPopulation[x][y];
+}
+
+inline void Grid::setNextState(const int x, const int y, State state)
+{
+    _nextPopulation[x][y] = state;
+}
+
+void Grid::nextGeneration()
+{
+
+    //#pragma omp parallel for
+    for (int x = 0; x < _columns; ++x)
+        for (int y = 0; y < _lines; ++y) {
+            int count = arroundCell (x,y);
+            if ((count == 2 || count == 3) && getState (x,y) == ALIVE )
+                setNextState (x,y, ALIVE);
+            else if ( count == 3 && getState (x,y) == DEAD)
+                setNextState (x,y, ALIVE);
+            else
+                setNextState (x,y, DEAD);
+        }
+
+    swapGrid ();
 }
 
 
 Grid::~Grid()
 {
 
-    if(_grid != NULL)
+    if(_currentPopulation != NULL)
     {
         int i;
 
-        for(i=0 ; i<hx ; i++)
-            free(_grid[i]);
+        for(i=0 ; i<_lines ; i++)
+            free(_currentPopulation[i]);
 
-        free(_grid);
+        free(_currentPopulation);
     }
 }
+
+void Grid::swapGrid()
+{
+
+    State** vswap = _currentPopulation;
+    _currentPopulation = _nextPopulation;
+    _nextPopulation = vswap;
+}
+
+short Grid::arroundCell(const int x, const int y)
+{
+    short n = 0;
+
+    for ( short i = -1 ; i < 2 ; i++ )
+        for ( short j = -1 ; j < 2 ; j++ )
+            if ( i+x >= 0 && i+x < _columns  )
+                if ( j+y >= 0 && j+y < _lines  ){
+                    // Puis on compte
+                    if ( i == 0 && j == 0 )
+                        continue ;
+                    if ( _currentPopulation[i+x][j+y] == ALIVE)
+                        n++ ;
+                }
+
+    return n;
+}
+
+void Grid::printMap() {
+
+    for (int y = 0; y < _lines; ++y) {
+        for (int x = 0; x < _columns; ++x){
+            if (_currentPopulation[x][y] == ALIVE)
+                cout << "*";
+            else
+                cout << ".";
+        }
+        cout <<endl;
+    }
+    cout <<endl;
+}
+
+void Grid::generateRandomGrid(float probAlive)
+{
+    for (int x = 0; x < _columns; ++x) {
+        for (int y = 0; y < _lines; ++y) {
+            float rand = getRand (0,1);
+            setNextState (x,y,(rand < probAlive)? ALIVE:DEAD);
+        }
+    }
+    /*setNextState(1,2, ALIVE);
+    setNextState(1,4, ALIVE);
+    setNextState(2,1, ALIVE);
+    setNextState(3,1, ALIVE);
+    setNextState(4,1, ALIVE);
+    setNextState(4,4, ALIVE);
+    setNextState(5,1, ALIVE);
+    setNextState(5,2, ALIVE);
+    setNextState(5,3, ALIVE);*/
+
+    swapGrid ();
+}
+

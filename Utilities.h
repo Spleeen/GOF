@@ -1,14 +1,15 @@
 /*
 *   Created by N.Richard
 *   Date de création : 17 novembre 2013
-*	Date de version : 29 décembre 2013
-*   Version 1.4
+*	Date de version : 25 janvier 2014
+*   Version 1.5
 */
 
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-#include <sstream>  
+#include <sstream>
+#include <stdlib.h>
 #include <sys/time.h>
 #include <fstream>
  
@@ -32,51 +33,25 @@
 	    Moteur de nombres aléatoires
 ****************************************/
 
-void initRandomEngine (){
-	srand((unsigned int) time(NULL));
-}
+void initRandomEngine ();
+float getRand(float inter_a, float inter_b);
 
-float getRand(float inter_a, float inter_b) {
-    return (inter_a < inter_b)?
-    	((inter_b - inter_a) * ((float)rand() / (float)RAND_MAX)) + inter_a:
-    	((inter_a - inter_b) * ((float)rand() / (float)RAND_MAX)) + inter_b;
 
-}
- 
 /*****************************
 		Transtypage
 *****************************/
 
 template<typename T>
-bool from_string( const std::string & Str, T & Dest )
-{
-    std::istringstream iss(Str);
-    return iss >> Dest != 0;
-}
+bool from_string( const std::string & Str, T & Dest );
 
 template<typename T>
-bool to_string( const T & Orig, const std::string & Str)
-{
-    std::ostringstream oss(Str);
-    return oss << Orig != 0;
-}
+bool to_string( const T & Orig, const std::string & Str);
 
 template<typename T>
-T& from_string( const std::string & Str)
-{
-	T Dest;
-    std::istringstream iss(Str);
-    iss >> Dest;
-    return Dest;
-}
+T& from_string( const std::string & Str);
 
 template<typename T>
-const std::string to_string( const T & Orig)
-{
-    std::ostringstream oss;
-    oss << Orig;
-    return oss.str();
-}
+const std::string to_string( const T & Orig);
 
 /*****************************
 	Gestion des benchmarks
@@ -87,22 +62,11 @@ const std::string to_string( const T & Orig)
 #define t_value ((tv2.tv_sec-tv1.tv_sec)*1e6 + tv2.tv_usec-tv1.tv_usec)
 #define t_show printf ("\nTemps de calcul : %g ms\n", t_value/1e3)
 
-/***********************************
-	Ajout de la tabulation en C++
-***********************************/
-
-namespace std {
-    const char* tab = "\t";
-}
 
 /***********************************
 	Manipulation de fichiers
 ***********************************/
 
-bool isReadable (const std::string& filePath) 
-{ 
-    std::ifstream file (filePath.c_str()); 
-    return !file.fail(); 
-} 
+bool isReadable (const std::string& filePath);
 
 #endif //UTILITIES_H

@@ -11,16 +11,19 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = GOF
 TEMPLATE = app
 
+QMAKE_CXXFLAGS+= -fopenmp
+QMAKE_LFLAGS +=  -fopenmp
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    cell.cpp \
-    grid.cpp
+    Utilities.cpp \
+    Grid.cpp \
+    Cell.cpp
 
 HEADERS  += mainwindow.h \
-    cell.h \
-    grid.h \
-    Utilities.h
+    Utilities.h \
+    Grid.h \
+    Cell.h
 
 FORMS    += mainwindow.ui
 

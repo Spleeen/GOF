@@ -3,7 +3,7 @@
 
 Cell::Cell()
 {
-    _alive = (0 == rand(0,2));
+    _alive = (0 == rand()%2);
 }
 
 Cell::Cell(bool alive)
@@ -11,7 +11,7 @@ Cell::Cell(bool alive)
     _alive = alive;
 }
 
-const bool Cell::isAlive()
+bool Cell::isAlive()
 {
     return _alive;
 }

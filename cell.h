@@ -8,7 +8,7 @@ public:
     /* Random cell */
     Cell();
     Cell(bool alive);
-    const bool isAlive();
+    bool isAlive();
 };
 
 #endif // CELL_H

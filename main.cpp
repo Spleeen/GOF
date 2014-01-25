@@ -14,9 +14,10 @@ int main(int argc, char *argv[])
 
     initRandomEngine();
 
-    Grid grid (30,30);
+    Grid grid (140,40);
 
     grid.generateRandomGrid (0.5);
+
 
     t_start;
     for (int var = 0; var < 1000; ++var) {

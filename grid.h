@@ -7,9 +7,13 @@ class Grid
 {
 private:
 
+    typedef enum Algo {
+        CONWAY
+    } Algo;
+
     State** _currentPopulation;
     State** _nextPopulation;
-
+    Algo _algoUsed;
     int _columns, _lines;
 public:
 
@@ -23,6 +27,7 @@ public:
     void nextGeneration();
     void generateRandomGrid(float probAlive);
 
+    void selectAlgo(Algo algo);
     void printMap();
 
     ~Grid();

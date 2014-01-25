@@ -5,6 +5,8 @@
 #include <omp.h>
 using namespace std;
 
+
+
 Grid::Grid(const int dimx, const int dimy)
 {
 
@@ -14,13 +16,13 @@ Grid::Grid(const int dimx, const int dimy)
 
         _columns = dimx;
         _lines = dimy;
-        _currentPopulation = (State**)malloc(sizeof(State*) * dimy);
-        _nextPopulation = (State**)malloc(sizeof(State*) * dimy);
+        _currentPopulation = (State**)malloc(sizeof(State*) * dimx);
+        _nextPopulation = (State**)malloc(sizeof(State*) * dimx);
 
 
-        for(i=0 ; i<dimy ; i++){
-            _currentPopulation[i] = (State*)calloc(dimx, sizeof(State));
-            _nextPopulation[i] = (State*)calloc(dimx, sizeof(State));
+        for(i=0 ; i<dimx ; i++){
+            _currentPopulation[i] = (State*)calloc(dimy, sizeof(State));
+            _nextPopulation[i] = (State*)calloc(dimy, sizeof(State));
 
         }
     }
@@ -32,6 +34,7 @@ Grid::Grid(const int dimx, const int dimy)
         _nextPopulation = NULL;
 
     }
+    _algoUsed = CONWAY;
 }
 
 inline State Grid::getState(const int x, const int y)
@@ -110,7 +113,7 @@ void Grid::printMap() {
             if (_currentPopulation[x][y] == ALIVE)
                 cout << "*";
             else
-                cout << ".";
+                cout << " ";
         }
         cout <<endl;
     }
@@ -125,16 +128,9 @@ void Grid::generateRandomGrid(float probAlive)
             setNextState (x,y,(rand < probAlive)? ALIVE:DEAD);
         }
     }
-    /*setNextState(1,2, ALIVE);
-    setNextState(1,4, ALIVE);
-    setNextState(2,1, ALIVE);
-    setNextState(3,1, ALIVE);
-    setNextState(4,1, ALIVE);
-    setNextState(4,4, ALIVE);
-    setNextState(5,1, ALIVE);
-    setNextState(5,2, ALIVE);
-    setNextState(5,3, ALIVE);*/
-
     swapGrid ();
 }
 
+void Grid::selectAlgo(Algo algo){
+    _algoUsed = algo;
+}

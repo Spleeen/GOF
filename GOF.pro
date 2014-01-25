@@ -15,17 +15,17 @@ QMAKE_CXXFLAGS+= -fopenmp
 QMAKE_LFLAGS +=  -fopenmp
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
+        Mainwindow.cpp \
     Utilities.cpp \
     Grid.cpp \
     Cell.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += Mainwindow.h \
     Utilities.h \
     Grid.h \
     Cell.h
 
-FORMS    += mainwindow.ui
+FORMS    += Mainwindow.ui
 
 OTHER_FILES += \
     .DS_Store \

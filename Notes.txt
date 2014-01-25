@@ -1,0 +1,61 @@
+TODOLIST : 
+
+ - Pensez à bien lire sur Wikipedia :
+    - Récupérer par exemple la liste des patterns (avec leurs noms) : l'idée serait d'établir une liste visuel :
+
+        - Les stables :
+             - Les agars
+
+
+ - Génération aléatoire (avec une certaine probabilité) d'une grille
+ - Sauvegarde/chargement d'une grille
+ - Zoom/Déplacement sur une grille (http://cl.ly/TTeZ et http://cl.ly/TU7Y
+ Ne boucler que sur les cellules en vie (tableau des vivants)
+Vérifier les voisins
+
+Lire le tableau d'état actuel, puis écrire dans un autre tableau (état futur) puis les inverser.
+=> Tableau C
+Sauvegarder toutes les cellules dans un fichier
+
+Grid::NextGeneration()
+int Grid::ArroundCell (Cell) //nbr de cellules vivantes
+
+short Grid::arround(short x,short y)
+{
+    short n = 0;
+     
+    // Cherche-voisin
+    for ( short i = -1 ; i < 2 ; i++ )
+    {
+        for ( short j = -1 ; j < 2 ; j++ )
+        {
+            // On vérifie si on est dans le tableau
+            if ( i+x > -1 && i+x < m_t_x  )
+            {
+                if ( j+y > -1 && j+y < m_t_y  )
+                {
+                    // Puis on compte
+                    if ( i == 0 && j == 0 )
+                        continue ;
+                    if ( m_cell_map[i+x][j+y] )
+                        n++ ;
+                }
+            }
+        }
+    }
+         
+    return n ;
+}
+
+sauvegarder/charger grille
+charger une grille aléatoire
+
+
+GUI
+runSimulation
+update GUI
+regarder format LIF
+
+barre en bas avec la population/génération/scale/XY=
+
+http://www.drgoulu.com/2009/03/29/la-resurrection-du-jeu-de-la-vie/

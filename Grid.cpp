@@ -1,4 +1,4 @@
-#include "grid.h"
+#include "Grid.h"
 #include "Utilities.h"
 #include <iostream>
 #include <stdio.h>

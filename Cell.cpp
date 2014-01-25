@@ -1,4 +1,4 @@
-#include "cell.h"
+#include "Cell.h"
 #include "Utilities.h"
 
 Cell::Cell()

@@ -17,3 +17,11 @@ ehthumbs.db
 Thumbs.db
 ~$*
 GOF.pro.user
+
+*.7pre1
+*.autosave
+*.Debug
+*.Release
+debug/*
+release/*
+Makefile

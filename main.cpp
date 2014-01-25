@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     for (int var = 0; var < 1000; ++var) {
         grid.nextGeneration ();
         grid.printMap ();
-        QThread::sleep (100);
+        QThread::msleep(100);
     }
     t_end;
 

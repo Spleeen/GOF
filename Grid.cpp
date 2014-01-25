@@ -49,10 +49,11 @@ inline void Grid::setNextState(const int x, const int y, State state)
 
 void Grid::nextGeneration()
 {
-
-    //#pragma omp parallel for
-    for (int x = 0; x < _columns; ++x)
-        for (int y = 0; y < _lines; ++y) {
+    #pragma omp parallel for
+    for (int y = 0; y < _lines; ++y)
+    {
+        for (int x = 0; x < _columns; ++x)
+        {
             int count = arroundCell (x,y);
             if ((count == 2 || count == 3) && getState (x,y) == ALIVE )
                 setNextState (x,y, ALIVE);
@@ -61,6 +62,7 @@ void Grid::nextGeneration()
             else
                 setNextState (x,y, DEAD);
         }
+    }
 
     swapGrid ();
 }
@@ -121,8 +123,8 @@ void Grid::printMap() {
 
 void Grid::generateRandomGrid(float probAlive)
 {
-    for (int x = 0; x < _columns; ++x) {
-        for (int y = 0; y < _lines; ++y) {
+    for (int y = 0; y < _lines; ++y) {
+        for (int x = 0; x < _columns; ++x) {
             float rand = getRand (0,1);
             setNextState (x,y,(rand < probAlive)? ALIVE:DEAD);
         }

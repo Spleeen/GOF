@@ -5,8 +5,6 @@
 #include <omp.h>
 using namespace std;
 
-
-
 Grid::Grid(const int dimx, const int dimy)
 {
 
@@ -23,7 +21,6 @@ Grid::Grid(const int dimx, const int dimy)
         for(i=0 ; i<dimx ; i++){
             _currentPopulation[i] = (State*)calloc(dimy, sizeof(State));
             _nextPopulation[i] = (State*)calloc(dimy, sizeof(State));
-
         }
     }
     else

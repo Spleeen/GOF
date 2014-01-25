@@ -109,7 +109,6 @@ short Grid::arroundCell(const int x, const int y)
         if(getState(x+0, y-1) == ALIVE) n++;
         if(getState(x+1, y-1) == ALIVE) n++;
         if(getState(x-1, y+0) == ALIVE) n++;
-        if(getState(x+0, y+0) == ALIVE) n++;
         if(getState(x+1, y+0) == ALIVE) n++;
         if(getState(x-1, y+1) == ALIVE) n++;
         if(getState(x+0, y+1) == ALIVE) n++;

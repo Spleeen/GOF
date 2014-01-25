@@ -94,15 +94,30 @@ short Grid::arroundCell(const int x, const int y)
 {
     short n = 0;
 
-    for ( short i = -1 ; i < 2 ; i++ )
-        for ( short j = -1 ; j < 2 ; j++ )
-            if ( i+x >= 0 && i+x < _columns  )
-                if ( j+y >= 0 && j+y < _lines  ){
-                    if ( i == 0 && j == 0 )
-                        continue ;
-                    if ( _currentPopulation[i+x][j+y] == ALIVE)
-                        n++ ;
-                }
+    // not optimized version (borders)
+    if(x <= 0 || y <= 0 || x >= _lines-1 || y >= _columns-1)
+    {
+        for(short j = -1 ; j < 2 ; j++)
+            if(j+y >= 0 && j+y < _lines)
+                for(short i = -1 ; i < 2 ; i++)
+                    if(i+x >= 0 && i+x < _columns)
+                        if((i != 0 || j != 0) && getState(i+x, j+y) == ALIVE)
+                            n++;
+    }
+
+    // optimized version
+    else
+    {
+        if(getState(x-1, y-1) == ALIVE) n++;
+        if(getState(x+0, y-1) == ALIVE) n++;
+        if(getState(x+1, y-1) == ALIVE) n++;
+        if(getState(x-1, y+0) == ALIVE) n++;
+        if(getState(x+0, y+0) == ALIVE) n++;
+        if(getState(x+1, y+0) == ALIVE) n++;
+        if(getState(x-1, y+1) == ALIVE) n++;
+        if(getState(x+0, y+1) == ALIVE) n++;
+        if(getState(x+1, y+1) == ALIVE) n++;
+    }
 
     return n;
 }

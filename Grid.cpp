@@ -96,7 +96,6 @@ short Grid::arroundCell(const int x, const int y)
         for ( short j = -1 ; j < 2 ; j++ )
             if ( i+x >= 0 && i+x < _columns  )
                 if ( j+y >= 0 && j+y < _lines  ){
-                    // Puis on compte
                     if ( i == 0 && j == 0 )
                         continue ;
                     if ( _currentPopulation[i+x][j+y] == ALIVE)

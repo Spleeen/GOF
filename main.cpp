@@ -1,10 +1,10 @@
 #include <QApplication>
 
-#include "mainwindow.h"
+#include "Mainwindow.h"
 #include "Utilities.h"
 #include "Grid.h"
 #include <iostream>
-#include <windows.h>
+#include <QThread>
 
 int main(int argc, char *argv[])
 {
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     for (int var = 0; var < 1000; ++var) {
         grid.nextGeneration ();
         grid.printMap ();
-        Sleep(100);
+        QThread::sleep (100);
     }
     t_end;
 

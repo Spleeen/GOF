@@ -22,3 +22,8 @@ GOF.pro.user
 
 debug/*
 release/*
+*.7pre1
+
+Makefile*
+
+ui_Mainwindow.h

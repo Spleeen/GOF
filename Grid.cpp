@@ -34,12 +34,12 @@ Grid::Grid(const int dimx, const int dimy)
     _algoUsed = CONWAY;
 }
 
-inline State Grid::getState(const int x, const int y)
+State Grid::getState(const int x, const int y)
 {
     return _currentPopulation[x][y];
 }
 
-inline void Grid::setNextState(const int x, const int y, State state)
+void Grid::setNextState(const int x, const int y, State state)
 {
     _nextPopulation[x][y] = state;
 }

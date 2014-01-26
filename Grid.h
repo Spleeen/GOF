@@ -22,7 +22,7 @@ public:
     //Grille sans vie
     Grid(const int wx, const int hx);
 
-    inline State getState(const int x, const int y);
+    State getState(const int x, const int y);
     void setNextState(const int x, const int y, State state);
 
     //Avec les règles classiques du jeu de la vie de Conway

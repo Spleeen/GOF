@@ -16,9 +16,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
 
-    void updateScene();
-
-
     ~MainWindow();
 
 private:
@@ -27,7 +24,7 @@ private:
     GraphicsScene _scene;
 
 public slots :
-        void on_myButton_clicked();
+         void updateScene();
 };
 
 #endif // MAINWINDOW_H

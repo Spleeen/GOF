@@ -48,6 +48,23 @@
        </spacer>
       </item>
       <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Speed</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSlider" name="speedSlider">
+        <property name="value">
+         <number>99</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="pushButton_3">
         <property name="text">
          <string>PushButton</string>

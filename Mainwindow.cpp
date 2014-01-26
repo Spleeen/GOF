@@ -1,24 +1,23 @@
 #include "Mainwindow.h"
 #include "ui_Mainwindow.h"
-#include <QTimer>
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    _ui(new Ui::MainWindow), _grid (500,500), _scene()
+    _ui(new Ui::MainWindow), _grid (500,500), _scene(), _delay (this)
 {
     _ui->setupUi(this);
 
     _ui->graphicsView->setMinimumSize (502,502);
 
-    _grid.generateRandomGrid (0.5);
+    _grid.generateRandomGrid (0.9);
 
+    _delay.setInterval(0);
 
-    QTimer* timer = new QTimer(this);
-    timer->setInterval(100);
-
-    connect (_ui->pushButton, SIGNAL(clicked()), timer, SLOT(start()));
-    connect (_ui->pushButton_2, SIGNAL(clicked()), timer, SLOT(stop()));
-    connect(timer, SIGNAL(timeout()), this, SLOT(updateScene()));
+    connect (_ui->pushButton, SIGNAL(clicked()),&_delay, SLOT(start()));
+    connect (_ui->pushButton_2, SIGNAL(clicked()), &_delay, SLOT(stop()));
+    connect(&_delay, SIGNAL(timeout()), this, SLOT(updateScene()));
+    connect (_ui->speedSlider, SIGNAL(valueChanged(int)), this, SLOT(changeDelay(int)));
 }
 
 
@@ -52,6 +51,10 @@ void MainWindow::updateScene(){
 
 }
 
+void MainWindow::changeDelay (int newDelay){
+    _delay.setInterval (990-(newDelay*10));
+
+}
 
 MainWindow::~MainWindow()
 {

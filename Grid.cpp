@@ -145,7 +145,7 @@ void Grid::generateRandomGrid(float probAlive)
     for (int y = 0; y < _lines; ++y) {
         for (int x = 0; x < _columns; ++x) {
             float rand = getRand (0,1);
-            setNextState (x,y,(rand < probAlive)? ALIVE:DEAD);
+            setNextState (x,y,(rand > probAlive)? ALIVE:DEAD);
         }
     }
     swapGrid ();

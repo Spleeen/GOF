@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "Grid.h"
 #include "GraphicsScene.h"
+#include <QTimer>
 
 namespace Ui {
 class MainWindow;
@@ -22,9 +23,11 @@ private:
     Ui::MainWindow *_ui;
     Grid _grid;
     GraphicsScene _scene;
+    QTimer _delay;
 
 public slots :
          void updateScene();
+         void changeDelay(int newDelay);
 };
 
 #endif // MAINWINDOW_H

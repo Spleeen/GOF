@@ -18,12 +18,14 @@ SOURCES += main.cpp\
         Mainwindow.cpp \
     Utilities.cpp \
     Grid.cpp \
-    Cell.cpp
+    Cell.cpp \
+    GraphicsScene.cpp
 
 HEADERS  += Mainwindow.h \
     Utilities.h \
     Grid.h \
-    Cell.h
+    Cell.h \
+    GraphicsScene.h
 
 FORMS    += Mainwindow.ui
 

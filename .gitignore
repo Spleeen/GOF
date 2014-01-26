@@ -24,3 +24,5 @@ GOF.pro.user
 *.Release
 debug/*
 release/*
+Makefile
+ui_Mainwindow.h

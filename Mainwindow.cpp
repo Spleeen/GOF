@@ -8,7 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
     _ui->setupUi(this);
 
     _ui->graphicsView->setMinimumSize (502,502);
-    _ui->graphicsView->setContentsMargins (QMargins());
 
     _grid.generateRandomGrid (0.5);
 

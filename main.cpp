@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
 
     grid.generateRandomGrid (0.5);
 
-
     t_start;
     for (int var = 0; var < 1000; ++var) {
         grid.nextGeneration ();

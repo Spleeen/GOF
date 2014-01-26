@@ -23,14 +23,14 @@
       <item>
        <widget class="QPushButton" name="pushButton">
         <property name="text">
-         <string>Next Generation</string>
+         <string>Start Computing</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_2">
         <property name="text">
-         <string>As soon</string>
+         <string>Stop Computing</string>
         </property>
        </widget>
       </item>

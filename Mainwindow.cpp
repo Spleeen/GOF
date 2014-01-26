@@ -1,5 +1,6 @@
 #include "Mainwindow.h"
 #include "ui_Mainwindow.h"
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,7 +12,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     _grid.generateRandomGrid (0.5);
 
-    connect (_ui->pushButton, SIGNAL(clicked()), this, SLOT(updateScene ()));
+
+    QTimer* timer = new QTimer(this);
+    timer->setInterval(100);
+
+    connect (_ui->pushButton, SIGNAL(clicked()), timer, SLOT(start()));
+    connect (_ui->pushButton_2, SIGNAL(clicked()), timer, SLOT(stop()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateScene()));
 }
 
 

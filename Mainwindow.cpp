@@ -52,7 +52,7 @@ void MainWindow::updateScene(){
 }
 
 void MainWindow::changeDelay (int newDelay){
-    _delay.setInterval (990-(newDelay*10));
+    _delay.setInterval (991-(newDelay*10));
 
 }
 

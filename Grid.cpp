@@ -64,6 +64,14 @@ void Grid::nextGeneration()
     swapGrid ();
 }
 
+int Grid::getColumns (){
+    return _columns;
+}
+
+int Grid::getLines (){
+    return _lines;
+}
+
 
 Grid::~Grid()
 {

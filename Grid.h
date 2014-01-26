@@ -3,6 +3,7 @@
 
 typedef enum {DEAD=false,ALIVE=true} State;
 
+
 class Grid
 {
 private:
@@ -17,6 +18,7 @@ private:
     int _columns, _lines;
 public:
 
+
     //Grille sans vie
     Grid(const int wx, const int hx);
 
@@ -29,6 +31,9 @@ public:
 
     void selectAlgo(Algo algo);
     void printMap();
+
+    int getColumns();
+    int getLines ();
 
     ~Grid();
 

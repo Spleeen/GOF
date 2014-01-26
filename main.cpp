@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
     w.show();
 
     initRandomEngine();
+    w.updateScene ();
 
     return a.exec();
 }

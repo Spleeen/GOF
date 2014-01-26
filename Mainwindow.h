@@ -18,12 +18,16 @@ public:
 
     void updateScene();
 
+
     ~MainWindow();
 
 private:
     Ui::MainWindow *_ui;
     Grid _grid;
     GraphicsScene _scene;
+
+public slots :
+        void on_myButton_clicked();
 };
 
 #endif // MAINWINDOW_H

@@ -9,8 +9,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    //MainWindow w;
-    //w.show();
+    MainWindow w;
+    w.show();
 
     initRandomEngine();
 
@@ -27,6 +27,6 @@ int main(int argc, char *argv[])
     t_end;
 
     t_show;
-    //return a.exec();
-    return EXIT_SUCCESS;
+    return a.exec();
+    //return EXIT_SUCCESS;
 }

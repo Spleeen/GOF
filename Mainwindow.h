@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "Grid.h"
+#include "GraphicsScene.h"
 
 namespace Ui {
 class MainWindow;
@@ -13,10 +15,15 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+
+    void updateScene();
+
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow *_ui;
+    Grid _grid;
+    GraphicsScene _scene;
 };
 
 #endif // MAINWINDOW_H

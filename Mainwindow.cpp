@@ -1,20 +1,28 @@
 #include "Mainwindow.h"
-#include "GraphicsScene.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    _ui(new Ui::MainWindow), _grid (200,200), _scene()
 {
-    ui->setupUi(this);
+    _ui->setupUi(this);
 
-    GraphicsScene scene;
+    _ui->graphicsView->setFixedSize (200,200);
+    _ui->graphicsView->setScene (&_scene);
 
-    ui->graphicsView->setScene (&scene);
-    ui->graphicsView->show ();
+   // _grid.generateRandomGrid (0.5);
+
+    _ui->graphicsView->show ();
+
+}
+
+void MainWindow::updateScene(){
+
+    while (1){
+    }
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+    delete _ui;
 }

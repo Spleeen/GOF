@@ -5,6 +5,7 @@
 #include "Grid.h"
 #include "GraphicsScene.h"
 #include <QTimer>
+#include <QColor>
 
 namespace Ui {
 class MainWindow;
@@ -24,10 +25,13 @@ private:
     Grid _grid;
     GraphicsScene _scene;
     QTimer _delay;
+    QColor _aliveColor;
+    QColor _deadColor;
+    QImage _render;
 
 public slots :
-         void updateScene();
-         void changeDelay(int newDelay);
+    void updateScene();
+    void changeDelay(int newDelay);
 };
 
 #endif // MAINWINDOW_H

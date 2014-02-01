@@ -4,11 +4,20 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    _ui(new Ui::MainWindow), _grid (500,500), _scene(), _delay (this)
+    _ui(new Ui::MainWindow),
+    _grid (4000,4000),
+    _scene(), _delay (this),
+    _aliveColor(255, 0, 0),
+    _deadColor(0,0,0),
+    _render(4000, 4000, QImage::Format_Indexed8)
+
 {
     _ui->setupUi(this);
 
-    _ui->graphicsView->setMinimumSize (502,502);
+    _ui->graphicsView->setMinimumSize (802,502);
+
+    _render.setColor(0, _aliveColor.rgb ());
+    _render.setColor(1, _deadColor.rgb ());
 
     _grid.generateRandomGrid (0.9);
 
@@ -23,24 +32,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::updateScene(){
 
-    QImage image(500, 500, QImage::Format_Indexed8);
-    QRgb noir = qRgb(0, 0, 0); // 0xff7aa327
-    QRgb blanc = qRgb(255, 255, 255); // 0xff7aa327
-
-    image.setColor(0, noir);
-    image.setColor(1, blanc);
 
     for (int i = 0; i < _grid.getColumns (); ++i) {
         for (int j = 0; j < _grid.getLines (); ++j) {
             if (_grid.getState (i,j) == ALIVE)
-                image.setPixel (i,j,0);
+                _render.setPixel (i,j,0);
             else
-                image.setPixel (i,j,1);
+                _render.setPixel (i,j,1);
         }
     }
 
     QPixmap monPixmap;
-    monPixmap = QPixmap::fromImage(image);
+    monPixmap = QPixmap::fromImage(_render);
 
     _scene.addPixmap (monPixmap);
 

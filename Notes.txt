@@ -59,3 +59,5 @@ regarder format LIF
 barre en bas avec la population/génération/scale/XY=
 
 http://www.drgoulu.com/2009/03/29/la-resurrection-du-jeu-de-la-vie/
+
+Possibilité de multithreadé par bloc ou par génération

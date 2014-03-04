@@ -75,15 +75,18 @@ int Grid::getLines (){
 
 Grid::~Grid()
 {
+    removeGrid (_currentPopulation);
+    removeGrid (_nextPopulation);
+}
 
-    if(_currentPopulation != NULL)
+void Grid::removeGrid(State** grid){
+
+    if(grid != NULL)
     {
-        int i;
+        for(int i=0 ; i<_lines ; i++)
+            free(grid[i]);
 
-        for(i=0 ; i<_lines ; i++)
-            free(_currentPopulation[i]);
-
-        free(_currentPopulation);
+        free(grid);
     }
 }
 
@@ -91,8 +94,10 @@ void Grid::swapGrid()
 {
 
     State** vswap = _currentPopulation;
+
     _currentPopulation = _nextPopulation;
     _nextPopulation = vswap;
+
 }
 
 short Grid::arroundCell(const int x, const int y)

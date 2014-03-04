@@ -35,6 +35,7 @@ public:
     int getColumns();
     int getLines ();
 
+    void removeGrid(State** grid);
     ~Grid();
 
 private:

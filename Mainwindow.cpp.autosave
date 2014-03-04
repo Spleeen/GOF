@@ -49,7 +49,7 @@ void MainWindow::updateScene(){
 
     _scene.addPixmap (monPixmap);
 
-    monPixmap.~QPixmap ();
+    
     _ui->graphicsView->setScene (&_scene);
 
     _grid.nextGeneration ();

@@ -30,7 +30,6 @@ HEADERS  += Mainwindow.h \
 FORMS    += Mainwindow.ui
 
 OTHER_FILES += \
-    .DS_Store \
     .gitignore \
     Diagramme UML.gliffy \
     GOF.pro.user \

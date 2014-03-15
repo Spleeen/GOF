@@ -27,3 +27,5 @@ release/*
 Makefile*
 
 ui_Mainwindow.h
+
+.qmake.stash

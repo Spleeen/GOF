@@ -1,58 +1,59 @@
 #include "Mainwindow.h"
 #include "ui_Mainwindow.h"
 #include <iostream>
+#include <omp.h>
+#define ALIVE_COLOR 0
+#define DEAD_COLOR 1
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     _ui(new Ui::MainWindow),
-    _grid (800,500),
-    _scene(), _delay (this),
-    _aliveColor(255, 0, 0),
+    _delay (this),
+    _aliveColor(255, 255, 255),
     _deadColor(0,0,0),
-    _render(800, 500, QImage::Format_Indexed8)
-
+    _render(2000, 2000, QImage::Format_Indexed8)
 {
     _ui->setupUi(this);
+    _grid = new Grid (2000,2000),
 
-    _ui->graphicsView->setMinimumSize (802,502);
+    _render.setColor(ALIVE_COLOR, _aliveColor.rgb ());
+    _render.setColor(DEAD_COLOR, _deadColor.rgb ());
 
-    _render.setColor(0, _aliveColor.rgb ());
-    _render.setColor(1, _deadColor.rgb ());
+    _grid->generateRandomGrid (0.9);
 
-    _grid.generateRandomGrid (0.9);
+    _delay.setInterval(1);
 
-    _delay.setInterval(0);
-
-    _ui->graphicsView->show ();
-
-    connect (_ui->pushButton, SIGNAL(clicked()),&_delay, SLOT(start()));
-    connect (_ui->pushButton_2, SIGNAL(clicked()), &_delay, SLOT(stop()));
-    connect(&_delay, SIGNAL(timeout()), this, SLOT(updateScene()));
+    connect (_ui->startButton, SIGNAL(clicked()),this, SLOT(startAnimation()));
+    connect (_ui->stopButton, SIGNAL(clicked()), this, SLOT(stopAnimation()));
+    connect (&_delay, SIGNAL(timeout()), this, SLOT(updateScene()));
     connect (_ui->speedSlider, SIGNAL(valueChanged(int)), this, SLOT(changeDelay(int)));
+    connect (_ui->reinitButton, SIGNAL(clicked()), this, SLOT(changeRandom()));
+    connect (_ui->sceneGV, SIGNAL(), this, SLOT(lol()));
+
 }
 
 
 void MainWindow::updateScene(){
 
-
-    for (int i = 0; i < _grid.getColumns (); ++i) {
-        for (int j = 0; j < _grid.getLines (); ++j) {
-            if (_grid.getState (i,j) == ALIVE)
-                _render.setPixel (i,j,0);
+#pragma omp parallel for
+    for (int i = 0; i < _grid->getColumns (); ++i) {
+        for (int j = 0; j < _grid->getLines (); ++j) {
+            if (_grid->getState (i,j) == ALIVE)
+                _render.setPixel (i,j,ALIVE_COLOR);
             else
-                _render.setPixel (i,j,1);
+                _render.setPixel (i,j,DEAD_COLOR);
         }
     }
 
-    QPixmap monPixmap;
-    monPixmap = QPixmap::fromImage(_render);
+    _monPixmap = QPixmap::fromImage(_render);
 
-    _scene.addPixmap (monPixmap);
+    _scene.clear ();
+    _scene.addPixmap (_monPixmap);
 
-    monPixmap.~QPixmap ();
-    _ui->graphicsView->setScene (&_scene);
+    _ui->sceneGV->setScene (&_scene);
 
-    _grid.nextGeneration ();
+    _ui->sceneGV->show ();
+    _grid->nextGeneration ();
 }
 
 void MainWindow::changeDelay (int newDelay){
@@ -60,7 +61,27 @@ void MainWindow::changeDelay (int newDelay){
 
 }
 
+void MainWindow::startAnimation(){
+
+    _delay.start ();
+    _ui->startButton->setEnabled (false);
+    _ui->stopButton->setEnabled (true);
+}
+
+void MainWindow::stopAnimation(){
+
+    _delay.stop ();
+    _ui->startButton->setEnabled (true);
+    _ui->stopButton->setEnabled (false);
+}
+
+void MainWindow::changeRandom(){
+
+    _grid->generateRandomGrid(_ui->randomDoubleSpin->value());
+}
+
 MainWindow::~MainWindow()
 {
     delete _ui;
 }
+

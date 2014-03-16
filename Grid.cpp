@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <omp.h>
+#include <Utilities.h>
 using namespace std;
 
 Grid::Grid(const int dimx, const int dimy): _nbCells(0)
@@ -46,6 +47,8 @@ void Grid::setNextState(const int x, const int y, State state)
 
 void Grid::nextGeneration()
 {
+	_nbGenerations++;
+	t_start;
 	int nbTemp = 0;
 
 #pragma omp parallel for
@@ -65,7 +68,11 @@ void Grid::nextGeneration()
 	}
 
 	_nbCells = nbTemp;
+
+	t_end;
 	swapGrid ();
+
+	t_show;
 }
 
 int Grid::getColumns (){
@@ -82,6 +89,10 @@ int Grid::getNbCellAlive (){
 
 int Grid::getNbCellDead (){
 	return getColumns()*getLines()-_nbCells;
+}
+
+int Grid::getNbGenerations (){
+	return _nbGenerations;
 }
 
 Grid::~Grid()
@@ -144,6 +155,7 @@ void Grid::generateRandomGrid(float probAlive)
 			setNextState (x,y,(rand > probAlive)? DEAD:ALIVE);
 		}
 	}
+	_nbGenerations = 0;
 	swapGrid ();
 }
 

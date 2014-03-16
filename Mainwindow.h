@@ -19,25 +19,25 @@ class MainWindow : public QMainWindow
 public:
 	explicit MainWindow(QWidget *parent = 0);
 
-    ~MainWindow();
+	~MainWindow();
 
 private:
-    Ui::MainWindow* _ui;
-    Grid* _grid;
-    QTimer _delay;
-    QColor _aliveColor;
-    QColor _deadColor;
-    GOFScene _scene;
-    QImage _render;
-    QPixmap _monPixmap;
-    QLabel* _nbCellLabel;
+	Ui::MainWindow* _ui;
+	Grid* _grid;
+	QTimer _delay;
+	QColor _aliveColor;
+	QColor _deadColor;
+	GOFScene _scene;
+	QImage _render;
+	QPixmap _monPixmap;
+	QLabel* _nbCellLabel;
+	QLabel* _nbGenerationLabel;
 
 public slots :
-    void updateScene();
-    void startAnimation();
-    void stopAnimation();
-    void changeRandom();
-    void changeDelay(int newDelay);
+	void updateScene();
+	void startStopAnimation();
+	void changeRandom();
+	void changeDelay(int newDelay);
 };
 
 #endif // MAINWINDOW_H

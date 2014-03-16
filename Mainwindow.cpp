@@ -3,10 +3,8 @@
 #include <iostream>
 #include "Utilities.h"
 
-#define ALIVE_COLOR 0
-#define DEAD_COLOR 1
-
 using namespace std;
+bool running = false;
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -14,28 +12,30 @@ MainWindow::MainWindow(QWidget *parent) :
 	_delay (this),
 	_aliveColor(255, 255, 255),
 	_deadColor(0,0,0),
-	_render(4000, 4000, QImage::Format_Indexed8),
-	_nbCellLabel (new QLabel("Nb de cellules en vie :"))
+	_render(1500, 1500, QImage::Format_Indexed8),
+	_nbCellLabel (new QLabel("Nb de cellules en vie :")),
+	_nbGenerationLabel (new QLabel("Nb de générations :"))
 {
 	_ui->setupUi(this);
 	this->setWindowTitle("Simulation du jeu de la vie");
+	this->setWindowIcon (QIcon(QString("./icon.icns")));
 
-	_grid = new Grid (4000,4000),
+	_grid = new Grid (1500,1500);
 
-	_render.setColor(ALIVE_COLOR, _aliveColor.rgb ());
-	_render.setColor(DEAD_COLOR, _deadColor.rgb ());
+	_render.setColor(ALIVE, _aliveColor.rgb ());
+	_render.setColor(DEAD, _deadColor.rgb ());
 
 	_grid->generateRandomGrid(_ui->randomDoubleSpin->value());
 
 	_delay.setInterval(1);
 
-	connect (_ui->startButton, SIGNAL(clicked()),this, SLOT(startAnimation()));
-	connect (_ui->stopButton, SIGNAL(clicked()), this, SLOT(stopAnimation()));
+	connect (_ui->startStopButton, SIGNAL(clicked()),this, SLOT(startStopAnimation()));
 	connect (&_delay, SIGNAL(timeout()), this, SLOT(updateScene()));
 	connect (_ui->speedSlider, SIGNAL(valueChanged(int)), this, SLOT(changeDelay(int)));
 	connect (_ui->reinitButton, SIGNAL(clicked()), this, SLOT(changeRandom()));
 	connect (_ui->sceneGV, SIGNAL(), this, SLOT(lol()));
 
+	updateScene ();
 }
 
 
@@ -44,9 +44,9 @@ void MainWindow::updateScene(){
 	for (int i = 0; i < _grid->getColumns (); ++i) {
 		for (int j = 0; j < _grid->getLines (); ++j) {
 			if (_grid->getState (i,j) == ALIVE)
-				_render.setPixel (i,j,ALIVE_COLOR);
+				_render.setPixel (i,j,ALIVE);
 			else
-				_render.setPixel (i,j,DEAD_COLOR);
+				_render.setPixel (i,j,DEAD);
 		}
 	}
 
@@ -58,9 +58,12 @@ void MainWindow::updateScene(){
 	_ui->sceneGV->setScene (&_scene);
 
 	_ui->statusBar->addWidget(_nbCellLabel);
+	_ui->statusBar->addWidget(_nbGenerationLabel);
 	_ui->sceneGV->show ();
 	_grid->nextGeneration ();
 	_nbCellLabel->setText("Nb de cellules en vie : " + QString::number(_grid->getNbCellAlive()));
+	_nbGenerationLabel->setText("Nb de générations : " + QString::number(_grid->getNbGenerations ()));
+
 }
 
 void MainWindow::changeDelay (int newDelay){
@@ -68,32 +71,30 @@ void MainWindow::changeDelay (int newDelay){
 
 }
 
-void MainWindow::startAnimation(){
+void MainWindow::startStopAnimation(){
 
-	_delay.start ();
-	_ui->startButton->setEnabled (false);
-	_ui->actionD_marrer_la_simulation->setEnabled(false);
-	_ui->stopButton->setEnabled (true);
-	_ui->actionStopper_la_simulation->setEnabled(true);
+	if (running){
+		_delay.stop ();
+		_ui->startStopButton->setText ("Démarrer la simulation");
+		_ui->actionStartStop->setText ("Démarrer la simulation");
+	}
+	else {
+		_delay.start ();
+		_ui->startStopButton->setText ("Stopper la simulation");
+		_ui->actionStartStop->setText ("Stopper la simulation");
+	}
+	running = !running;
 }
 
-void MainWindow::stopAnimation(){
 
-	_delay.stop ();
-	_ui->startButton->setEnabled (true);
-	_ui->actionD_marrer_la_simulation->setEnabled(true);
-	_ui->stopButton->setEnabled (false);
-	_ui->actionStopper_la_simulation->setEnabled(false);
-
-}
 
 void MainWindow::changeRandom(){
 
 	_grid->generateRandomGrid(_ui->randomDoubleSpin->value());
+	updateScene ();
 }
 
 MainWindow::~MainWindow()
 {
 	delete _ui;
 }
-

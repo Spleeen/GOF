@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>572</width>
-    <height>477</height>
+    <width>606</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
     <item>
      <widget class="QGraphicsView" name="sceneGV">
       <property name="minimumSize">
@@ -27,11 +27,11 @@
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_8"/>
-      </item>
-      <item>
-       <widget class="QPushButton" name="startButton">
+       <widget class="QPushButton" name="startStopButton">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -65,19 +65,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="stopButton">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <property name="text">
-         <string>Stopper simulation</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -91,6 +78,12 @@
        </spacer>
       </item>
       <item>
+       <widget class="QComboBox" name="patternCB"/>
+      </item>
+      <item>
+       <widget class="QGraphicsView" name="patternGV"/>
+      </item>
+      <item>
        <widget class="QLabel" name="speedlabel">
         <property name="text">
          <string>Speed</string>
@@ -99,7 +92,16 @@
       </item>
       <item>
        <widget class="QSlider" name="speedSlider">
+        <property name="singleStep">
+         <number>25</number>
+        </property>
+        <property name="pageStep">
+         <number>25</number>
+        </property>
         <property name="value">
+         <number>99</number>
+        </property>
+        <property name="sliderPosition">
          <number>99</number>
         </property>
         <property name="orientation">
@@ -150,30 +152,21 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>572</width>
-     <height>20</height>
+     <width>606</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSimulation">
     <property name="title">
      <string>Simulation</string>
     </property>
-    <addaction name="actionD_marrer_la_simulation"/>
-    <addaction name="actionStopper_la_simulation"/>
-    <addaction name="actionR_initialiser"/>
+    <addaction name="actionStartStop"/>
+    <addaction name="actionReinitialiser"/>
    </widget>
    <addaction name="menuSimulation"/>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionD_marrer_la_simulation">
+  <action name="actionStartStop">
    <property name="text">
     <string>Démarrer la simulation</string>
    </property>
@@ -186,7 +179,7 @@
     <string>Stopper la simulation</string>
    </property>
   </action>
-  <action name="actionR_initialiser">
+  <action name="actionReinitialiser">
    <property name="text">
     <string>Réinitialiser</string>
    </property>
@@ -196,9 +189,9 @@
  <resources/>
  <connections>
   <connection>
-   <sender>actionD_marrer_la_simulation</sender>
+   <sender>actionStartStop</sender>
    <signal>triggered()</signal>
-   <receiver>startButton</receiver>
+   <receiver>startStopButton</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -212,23 +205,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionStopper_la_simulation</sender>
-   <signal>triggered()</signal>
-   <receiver>stopButton</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>488</x>
-     <y>95</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionR_initialiser</sender>
+   <sender>actionReinitialiser</sender>
    <signal>triggered()</signal>
    <receiver>reinitButton</receiver>
    <slot>click()</slot>

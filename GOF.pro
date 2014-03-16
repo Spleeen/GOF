@@ -28,5 +28,4 @@ FORMS    += Mainwindow.ui
 OTHER_FILES += \
     Diagramme UML.gliffy \
     Notes.txt \
-    GOF.app \
-    Makefile
+    GOF.app

@@ -1,7 +1,9 @@
 #ifndef GRID_H
 #define GRID_H
 
-typedef enum {DEAD=false,ALIVE=true} State;
+typedef char State;
+#define ALIVE 0
+#define DEAD 1
 
 class Grid
 {
@@ -15,7 +17,8 @@ private:
 	State** _nextPopulation;
 	Algo _algoUsed;
 	int _columns, _lines;
-    int _nbCells;
+	int _nbCells;
+	int _nbGenerations;
 public:
 
 
@@ -34,8 +37,9 @@ public:
 
 	int getColumns();
 	int getLines ();
-    int getNbCellAlive ();
-    int getNbCellDead ();
+	int getNbCellAlive ();
+	int getNbCellDead ();
+	int getNbGenerations();
 
 	void fillGrid (State state);
 

@@ -6,6 +6,7 @@
 #include "GOFScene.h"
 #include <QTimer>
 #include <QColor>
+#include <QLabel>
 
 namespace Ui {
 class MainWindow;
@@ -29,6 +30,7 @@ private:
     GOFScene _scene;
     QImage _render;
     QPixmap _monPixmap;
+    QLabel* _nbCellLabel;
 
 public slots :
     void updateScene();

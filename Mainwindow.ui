@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>530</width>
+    <width>572</width>
     <height>477</height>
    </rect>
   </property>
@@ -28,6 +28,9 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8"/>
+      </item>
+      <item>
        <widget class="QPushButton" name="startButton">
         <property name="enabled">
          <bool>true</bool>
@@ -42,7 +45,7 @@
          <string notr="true"/>
         </property>
         <property name="text">
-         <string notr="true">Start simulation</string>
+         <string notr="true">Démarrer simulation</string>
         </property>
         <property name="iconSize">
          <size>
@@ -63,11 +66,14 @@
       </item>
       <item>
        <widget class="QPushButton" name="stopButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Stop simulation</string>
+         <string>Stopper simulation</string>
         </property>
        </widget>
       </item>
@@ -119,14 +125,17 @@
         </item>
         <item>
          <widget class="QDoubleSpinBox" name="randomDoubleSpin">
+          <property name="minimum">
+           <double>0.050000000000000</double>
+          </property>
           <property name="maximum">
-           <double>1.000000000000000</double>
+           <double>0.950000000000000</double>
           </property>
           <property name="singleStep">
-           <double>0.100000000000000</double>
+           <double>0.050000000000000</double>
           </property>
           <property name="value">
-           <double>0.900000000000000</double>
+           <double>0.100000000000000</double>
           </property>
          </widget>
         </item>
@@ -141,10 +150,19 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>530</width>
+     <width>572</width>
      <height>20</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuSimulation">
+    <property name="title">
+     <string>Simulation</string>
+    </property>
+    <addaction name="actionD_marrer_la_simulation"/>
+    <addaction name="actionStopper_la_simulation"/>
+    <addaction name="actionR_initialiser"/>
+   </widget>
+   <addaction name="menuSimulation"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -155,8 +173,75 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionD_marrer_la_simulation">
+   <property name="text">
+    <string>Démarrer la simulation</string>
+   </property>
+  </action>
+  <action name="actionStopper_la_simulation">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Stopper la simulation</string>
+   </property>
+  </action>
+  <action name="actionR_initialiser">
+   <property name="text">
+    <string>Réinitialiser</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionD_marrer_la_simulation</sender>
+   <signal>triggered()</signal>
+   <receiver>startButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>488</x>
+     <y>66</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionStopper_la_simulation</sender>
+   <signal>triggered()</signal>
+   <receiver>stopButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>488</x>
+     <y>95</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionR_initialiser</sender>
+   <signal>triggered()</signal>
+   <receiver>reinitButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>488</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

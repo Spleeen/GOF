@@ -2,10 +2,10 @@
 #include "Utilities.h"
 #include <iostream>
 #include <stdio.h>
-//#include <omp.h>
+#include <omp.h>
 using namespace std;
 
-Grid::Grid(const int dimx, const int dimy)
+Grid::Grid(const int dimx, const int dimy): _nbCells(0)
 {
 
 	if(dimx > 0 && dimy > 0)
@@ -16,7 +16,6 @@ Grid::Grid(const int dimx, const int dimy)
 		_lines = dimy;
 		_currentPopulation = (State**) malloc(sizeof(State*) * dimx);
 		_nextPopulation = (State**) malloc(sizeof(State*) * dimx);
-
 
 		for(i=0 ; i<dimx ; i++){
 			_currentPopulation[i] = (State*)calloc(dimy, sizeof(State));
@@ -47,12 +46,15 @@ void Grid::setNextState(const int x, const int y, State state)
 
 void Grid::nextGeneration()
 {
-//#pragma omp parallel for
+	int nbTemp = 0;
+
+#pragma omp parallel for
 	for (int y = 0; y < getLines (); ++y)
 	{
 		for (int x = 0; x < getColumns (); ++x)
 		{
-		int count = arroundCell (x,y);
+			if (getState (x,y) == ALIVE) nbTemp++;
+			int count = arroundCell (x,y);
 			if ((count == 2 || count == 3) && getState (x,y) == ALIVE )
 				setNextState (x,y, ALIVE);
 			else if ( count == 3 && getState (x,y) == DEAD)
@@ -62,6 +64,7 @@ void Grid::nextGeneration()
 		}
 	}
 
+	_nbCells = nbTemp;
 	swapGrid ();
 }
 
@@ -73,6 +76,13 @@ int Grid::getLines (){
 	return _lines;
 }
 
+int Grid::getNbCellAlive (){
+	return _nbCells;
+}
+
+int Grid::getNbCellDead (){
+	return getColumns()*getLines()-_nbCells;
+}
 
 Grid::~Grid()
 {
@@ -131,7 +141,7 @@ void Grid::generateRandomGrid(float probAlive)
 	for (int y = 0; y < getLines (); ++y) {
 		for (int x = 0; x < getColumns (); ++x) {
 			float rand = getRand (0,1);
-			setNextState (x,y,(rand > probAlive)? ALIVE:DEAD);
+			setNextState (x,y,(rand > probAlive)? DEAD:ALIVE);
 		}
 	}
 	swapGrid ();

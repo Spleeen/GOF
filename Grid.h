@@ -15,6 +15,7 @@ private:
 	State** _nextPopulation;
 	Algo _algoUsed;
 	int _columns, _lines;
+    int _nbCells;
 public:
 
 
@@ -33,6 +34,9 @@ public:
 
 	int getColumns();
 	int getLines ();
+    int getNbCellAlive ();
+    int getNbCellDead ();
+
 	void fillGrid (State state);
 
 	~Grid();

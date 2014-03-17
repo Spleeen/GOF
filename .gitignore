@@ -23,3 +23,4 @@ ui_*.h
 *.pro.user*
 *qmake*
 Makefile
+*autosave

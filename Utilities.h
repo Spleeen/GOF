@@ -17,7 +17,7 @@
 	Paramètre inutilisés (passer -Wall)
 *****************************************/
 
-#ifdef __GNUC__
+#ifdef __GNUC__ 
 #  define UNUSED(x) UNUSED_ ## x __attribute__((__unused__))
 #else
 #  define UNUSED(x) UNUSED_ ## x

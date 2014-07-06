@@ -78,12 +78,6 @@
        </spacer>
       </item>
       <item>
-       <widget class="QComboBox" name="patternCB"/>
-      </item>
-      <item>
-       <widget class="QGraphicsView" name="patternGV"/>
-      </item>
-      <item>
        <widget class="QLabel" name="speedlabel">
         <property name="text">
          <string>Speed</string>
@@ -128,16 +122,16 @@
         <item>
          <widget class="QDoubleSpinBox" name="randomDoubleSpin">
           <property name="minimum">
-           <double>0.050000000000000</double>
+           <double>1.000000000000000</double>
           </property>
           <property name="maximum">
-           <double>0.950000000000000</double>
+           <double>99.000000000000000</double>
           </property>
           <property name="singleStep">
-           <double>0.050000000000000</double>
+           <double>1.000000000000000</double>
           </property>
           <property name="value">
-           <double>0.100000000000000</double>
+           <double>20.000000000000000</double>
           </property>
          </widget>
         </item>
@@ -153,7 +147,7 @@
      <x>0</x>
      <y>0</y>
      <width>606</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSimulation">

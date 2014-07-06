@@ -4,29 +4,58 @@
 #include <stdio.h>
 #include <omp.h>
 #include <Utilities.h>
+#include <String>
 using namespace std;
+
+string LIB = "OPENMP";
+#define N_THREADS 8
+
+typedef struct Portion_grid {
+	int borne_a;
+	int borne_b;
+	int nbCols;
+	Grid* grid;
+	int nbTemp;
+} Portion_grid;
+
+ void* grid_compute_thread (void* t) {   
+
+	Portion_grid* portion = (Portion_grid*)t;
+
+	for (int y = portion->borne_a; y < portion->borne_b; ++y)
+	{
+		for (int x = 0; x < portion->nbCols; ++x)
+		{
+			if (portion->grid->getState (x,y) == ALIVE) portion->nbTemp++;
+			int count = portion->grid->arroundCell (x,y);
+			if ((count == 2 || count == 3) && portion->grid->getState (x,y) == ALIVE )
+				portion->grid->setNextState (x,y, ALIVE);
+			else if ( count == 3 && portion->grid->getState (x,y) == DEAD)
+				portion->grid->setNextState (x,y, ALIVE);
+			else
+				portion->grid->setNextState (x,y, DEAD);
+		}
+	}
+        
+	return NULL;
+}
 
 Grid::Grid(const int dimx, const int dimy): _nbCells(0)
 {
 
 	if(dimx > 0 && dimy > 0)
 	{
-		int i;
-
 		_columns = dimx;
 		_lines = dimy;
-		_currentPopulation = (State**) malloc(sizeof(State*) * dimx);
-		_nextPopulation = (State**) malloc(sizeof(State*) * dimx);
-
-		for(i=0 ; i<dimx ; i++){
-			_currentPopulation[i] = (State*)calloc(dimy, sizeof(State));
-			_nextPopulation[i] = (State*)calloc(dimy, sizeof(State));
-		}
+		_previousPopulation = new Population(dimx, dimy);
+		_currentPopulation = new Population(dimx, dimy);
+		_nextPopulation = new Population(dimx, dimy);
 	}
 	else
 	{
 		_columns = 0;
 		_lines = 0;
+		_previousPopulation = NULL;
 		_currentPopulation = NULL;
 		_nextPopulation = NULL;
 
@@ -36,43 +65,77 @@ Grid::Grid(const int dimx, const int dimy): _nbCells(0)
 
 State Grid::getState(const int x, const int y)
 {
-	return _currentPopulation[x][y];
+	return _currentPopulation->at(x,y);
 }
 
 void Grid::setNextState(const int x, const int y, State state)
 {
-	_nextPopulation[x][y] = state;
-
+	_nextPopulation->set(x,y, state);
 }
 
 void Grid::nextGeneration()
 {
 	_nbGenerations++;
-	t_start;
-	int nbTemp = 0;
+	_nbCells = 0;
 
-#pragma omp parallel for
-	for (int y = 0; y < getLines (); ++y)
+	if (LIB == "OPENMP")
 	{
-		for (int x = 0; x < getColumns (); ++x)
-		{
-			if (getState (x,y) == ALIVE) nbTemp++;
-			int count = arroundCell (x,y);
-			if ((count == 2 || count == 3) && getState (x,y) == ALIVE )
-				setNextState (x,y, ALIVE);
-			else if ( count == 3 && getState (x,y) == DEAD)
-				setNextState (x,y, ALIVE);
-			else
-				setNextState (x,y, DEAD);
+
+		#ifdef _OPENMP
+			#pragma omp parallel
+			{
+				int nbTemp =  0;
+
+				#pragma omp for
+				for (int y = 0; y < getLines (); ++y)
+				{
+					for (int x = 0; x < getColumns (); ++x)
+					{
+						if (getState (x,y) == ALIVE){
+							nbTemp++;
+						}
+						int count = arroundCell (x,y);
+						if ((count == 2 || count == 3) && getState (x,y) == ALIVE )
+							setNextState (x,y, ALIVE);
+						else if ( count == 3 && getState (x,y) == DEAD)
+							setNextState (x,y, ALIVE);
+						else
+							setNextState (x,y, DEAD);
+					}
+				}
+
+				#pragma omp atomic
+				_nbCells += nbTemp;
+			}
+		#endif //_OPENMP
+	}
+	else {
+		int nbTemp = 0;
+		pthread_t threads [N_THREADS];
+		Portion_grid portion[N_THREADS];
+
+		//Lancement des threads
+		for (int j=0; j<N_THREADS; ++j){
+			//Obligation de réserver pour chacun des threads une variable de type struct. Sinon, elle pointerait sur la même variable en mémoire.
+			Portion_grid tmp = {getLines ()*j / N_THREADS, getLines ()*(j + 1) / N_THREADS, getColumns (), this, nbTemp};
+			portion[j] = tmp;
+
+			if (pthread_create (&threads[j], NULL, grid_compute_thread, (void*)&portion[j]) != 0){
+				perror ("Erreur dans la création du thread\n");
+				exit(EXIT_FAILURE);
+			}
 		}
+
+		//Attente du résultat
+		for (int j=0; j<N_THREADS; ++j){
+			pthread_join (threads[j],NULL);
+			nbTemp += portion[j].nbTemp;
+		}
+
+		_nbCells = nbTemp;
 	}
 
-	_nbCells = nbTemp;
-
-	t_end;
 	swapGrid ();
-
-	t_show;
 }
 
 int Grid::getColumns (){
@@ -97,23 +160,20 @@ int Grid::getNbGenerations (){
 
 Grid::~Grid()
 {
+	if(_previousPopulation != NULL)
+		delete _nextPopulation;
+
 	if(_currentPopulation != NULL)
-	{
-		for(int i=0 ; i< getColumns (); i++)
-			free(_currentPopulation[i]);
-		free(_currentPopulation);
-	}
+		delete _currentPopulation;
+
 	if(_nextPopulation != NULL)
-	{
-		for(int i=0 ; i< getColumns (); i++)
-			free(_nextPopulation[i]);
-		free(_nextPopulation);
-	}
+		delete _nextPopulation;
 }
 
 void Grid::swapGrid()
 {
 	swap (_currentPopulation, _nextPopulation);
+	swap (_previousPopulation, _nextPopulation);
 }
 
 short Grid::arroundCell(const int x, const int y)

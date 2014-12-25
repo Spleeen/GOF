@@ -9,11 +9,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = GOF
 TEMPLATE = app
 
-QMAKE_CXXFLAGS += -O3 -pipe -fopenmp -std=c++11
-QMAKE_CXXFLAGS_RELEASE += -DNDEBUG  -march=native -fstack-protector --param=ssp-buffer-size=4
-
-LIBS +=  -fopenmp -lpthread -D_REENTRANT
-
+QMAKE_CXXFLAGS += -fopenmp
+LIBS +=  -fopenmp
 
 SOURCES += main.cpp\
         Mainwindow.cpp \
@@ -24,8 +21,7 @@ SOURCES += main.cpp\
 HEADERS  += Mainwindow.h \
     Utilities.h \
     Grid.h \
-    GOFScene.h \
-    Matrix.h
+    GOFScene.h
 
 FORMS    += Mainwindow.ui
 

@@ -28,7 +28,6 @@ private:
 	QColor _aliveColor;
 	QColor _deadColor;
 	GOFScene _scene;
-	uchar* data;
 	QImage _render;
 	QPixmap _monPixmap;
 	QLabel* _nbCellLabel;
